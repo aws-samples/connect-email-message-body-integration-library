@@ -1,0 +1,502 @@
+{
+  "Version": "2019-10-30",
+  "StartAction": "debf1d0e-284e-4c56-bbfb-eaec2aae46df",
+  "Metadata": {
+    "entryPointPosition": {
+      "x": 40,
+      "y": 40
+    },
+    "ActionMetadata": {
+      "debf1d0e-284e-4c56-bbfb-eaec2aae46df": {
+        "position": {
+          "x": 114.4,
+          "y": 217.6
+        }
+      },
+      "1c94895b-5cf0-4222-8809-40396882c752": {
+        "position": {
+          "x": 641.6,
+          "y": 604
+        }
+      },
+      "d2d5d5f7-96ca-417a-9145-f47f4ab73807": {
+        "position": {
+          "x": 884.8,
+          "y": 215.2
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "HomeEquity"
+          }
+        },
+        "queue": {
+          "text": "HomeEquity"
+        }
+      },
+      "1d03a2b7-1551-42be-a15c-1ea10a60b299": {
+        "position": {
+          "x": 883.2,
+          "y": 399.2
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "CarLoan"
+          }
+        },
+        "queue": {
+          "text": "CarLoan"
+        }
+      },
+      "810a475e-8583-4053-9625-30e8b5383ce1": {
+        "position": {
+          "x": 884.8,
+          "y": 584
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "HomeLoan"
+          }
+        },
+        "queue": {
+          "text": "HomeLoan"
+        }
+      },
+      "8d3dc30e-b475-465a-aa62-834f78928a0f": {
+        "position": {
+          "x": 333.6,
+          "y": 39.2
+        },
+        "parameters": {
+          "LambdaFunctionARN": {
+            "displayName": "email-routing"
+          }
+        },
+        "dynamicMetadata": {}
+      },
+      "3e51066d-2c0f-4ee4-b878-9fc62e2be104": {
+        "position": {
+          "x": 651.2,
+          "y": 13.6
+        },
+        "dynamicParams": []
+      },
+      "1c215ce8-a3d2-43c4-b87a-14a0ce31bd2a": {
+        "position": {
+          "x": 384,
+          "y": 244.8
+        },
+        "parameters": {
+          "Attributes": {
+            "pii": {
+              "useDynamic": true
+            },
+            "intent": {
+              "useDynamic": true
+            },
+            "phone_number": {
+              "useDynamic": true
+            },
+            "account_number": {
+              "useDynamic": true
+            }
+          }
+        },
+        "dynamicParams": [
+          "pii",
+          "intent",
+          "phone_number",
+          "account_number"
+        ]
+      },
+      "0027fea4-7e6b-41b7-91a0-cfc97d382bdd": {
+        "position": {
+          "x": 348,
+          "y": 492
+        },
+        "conditions": [],
+        "conditionMetadata": [
+          {
+            "id": "76b99c50-9125-4bac-a741-19b79e6fb1eb",
+            "operator": {
+              "name": "Equals",
+              "value": "Equals",
+              "shortDisplay": "="
+            },
+            "value": "true"
+          }
+        ]
+      },
+      "c69e14a9-cd0a-41cf-b605-7a4dffae74a2": {
+        "position": {
+          "x": 1200.8,
+          "y": 18.4
+        }
+      },
+      "eacb98c0-7551-418f-b483-5bf172d897eb": {
+        "position": {
+          "x": 1411.2,
+          "y": 205.6
+        }
+      },
+      "06e85d15-d39c-4e01-b4cb-b933a006abee": {
+        "position": {
+          "x": 646.4,
+          "y": 216.8
+        },
+        "conditions": [],
+        "conditionMetadata": [
+          {
+            "id": "9a2a0df4-0e62-4db9-8432-b1be5e348348",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "equity"
+          },
+          {
+            "id": "7929b0be-b641-4568-b090-84d2e911b26f",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "car loan"
+          },
+          {
+            "id": "b9669317-552d-4347-ab4e-fd8d11cffe6c",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "vehicle loan"
+          },
+          {
+            "id": "1c883d48-6a3c-44d8-9ffe-09fecd97d117",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "home loan"
+          },
+          {
+            "id": "5790475a-cf9e-4e5f-9932-b8e1ffc534be",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "house purchase"
+          },
+          {
+            "id": "0d86b8fe-37c4-44a7-957d-2fe66f84c2fa",
+            "operator": {
+              "name": "Contains",
+              "value": "Contains",
+              "shortDisplay": "contains"
+            },
+            "value": "mortgage"
+          }
+        ]
+      },
+      "931b7705-971d-41ac-8f5e-529d7ac18d25": {
+        "position": {
+          "x": 888.8,
+          "y": 767.2
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "Unknown"
+          }
+        },
+        "queue": {
+          "text": "Unknown"
+        }
+      }
+    },
+    "Annotations": [],
+    "name": "Intent Routing Email Flow",
+    "description": "",
+    "type": "contactFlow",
+    "status": "PUBLISHED",
+    "hash": {}
+  },
+  "Actions": [
+    {
+      "Parameters": {
+        "FlowLoggingBehavior": "Enabled"
+      },
+      "Identifier": "debf1d0e-284e-4c56-bbfb-eaec2aae46df",
+      "Type": "UpdateFlowLoggingBehavior",
+      "Transitions": {
+        "NextAction": "8d3dc30e-b475-465a-aa62-834f78928a0f"
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "Lambda error\nCheck Cloud watch"
+      },
+      "Identifier": "1c94895b-5cf0-4222-8809-40396882c752",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:eu-central-1:964141293779:instance/9baaa263-49c3-4e5f-8489-dea1210d2df7/queue/fefe71d7-2b39-4640-85e1-62ecf74f7262"
+      },
+      "Identifier": "d2d5d5f7-96ca-417a-9145-f47f4ab73807",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "c69e14a9-cd0a-41cf-b605-7a4dffae74a2",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:eu-central-1:964141293779:instance/9baaa263-49c3-4e5f-8489-dea1210d2df7/queue/b26bca28-cebb-440b-9574-af2ae72c9f19"
+      },
+      "Identifier": "1d03a2b7-1551-42be-a15c-1ea10a60b299",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "c69e14a9-cd0a-41cf-b605-7a4dffae74a2",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:eu-central-1:964141293779:instance/9baaa263-49c3-4e5f-8489-dea1210d2df7/queue/4f5daf8a-57b9-45d9-a559-50e66c30e66c"
+      },
+      "Identifier": "810a475e-8583-4053-9625-30e8b5383ce1",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "c69e14a9-cd0a-41cf-b605-7a4dffae74a2",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "LambdaFunctionARN": "arn:aws:lambda:eu-central-1:964141293779:function:email-routing",
+        "InvocationTimeLimitSeconds": "8",
+        "ResponseValidation": {
+          "ResponseType": "STRING_MAP"
+        }
+      },
+      "Identifier": "8d3dc30e-b475-465a-aa62-834f78928a0f",
+      "Type": "InvokeLambdaFunction",
+      "Transitions": {
+        "NextAction": "1c215ce8-a3d2-43c4-b87a-14a0ce31bd2a",
+        "Errors": [
+          {
+            "NextAction": "1c94895b-5cf0-4222-8809-40396882c752",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Attributes": {
+          "detected_pii": "Caution PII has been detected in email "
+        },
+        "TargetContact": "Current"
+      },
+      "Identifier": "3e51066d-2c0f-4ee4-b878-9fc62e2be104",
+      "Type": "UpdateContactAttributes",
+      "Transitions": {
+        "NextAction": "06e85d15-d39c-4e01-b4cb-b933a006abee",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Attributes": {
+          "pii": "$.External.pii_detected",
+          "intent": "$.External.user_intent",
+          "phone_number": "$.External.phone_number",
+          "account_number": "$.External.account_number"
+        },
+        "TargetContact": "Current"
+      },
+      "Identifier": "1c215ce8-a3d2-43c4-b87a-14a0ce31bd2a",
+      "Type": "UpdateContactAttributes",
+      "Transitions": {
+        "NextAction": "0027fea4-7e6b-41b7-91a0-cfc97d382bdd",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "ComparisonValue": "$.Attributes.pii"
+      },
+      "Identifier": "0027fea4-7e6b-41b7-91a0-cfc97d382bdd",
+      "Type": "Compare",
+      "Transitions": {
+        "NextAction": "06e85d15-d39c-4e01-b4cb-b933a006abee",
+        "Conditions": [
+          {
+            "NextAction": "3e51066d-2c0f-4ee4-b878-9fc62e2be104",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "true"
+              ]
+            }
+          }
+        ],
+        "Errors": [
+          {
+            "NextAction": "06e85d15-d39c-4e01-b4cb-b933a006abee",
+            "ErrorType": "NoMatchingCondition"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "c69e14a9-cd0a-41cf-b605-7a4dffae74a2",
+      "Type": "TransferContactToQueue",
+      "Transitions": {
+        "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "eacb98c0-7551-418f-b483-5bf172d897eb",
+      "Type": "DisconnectParticipant",
+      "Transitions": {}
+    },
+    {
+      "Parameters": {
+        "ComparisonValue": "$.Attributes.intent"
+      },
+      "Identifier": "06e85d15-d39c-4e01-b4cb-b933a006abee",
+      "Type": "Compare",
+      "Transitions": {
+        "NextAction": "931b7705-971d-41ac-8f5e-529d7ac18d25",
+        "Conditions": [
+          {
+            "NextAction": "d2d5d5f7-96ca-417a-9145-f47f4ab73807",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "equity"
+              ]
+            }
+          },
+          {
+            "NextAction": "1d03a2b7-1551-42be-a15c-1ea10a60b299",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "car loan"
+              ]
+            }
+          },
+          {
+            "NextAction": "1d03a2b7-1551-42be-a15c-1ea10a60b299",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "vehicle loan"
+              ]
+            }
+          },
+          {
+            "NextAction": "810a475e-8583-4053-9625-30e8b5383ce1",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "home loan"
+              ]
+            }
+          },
+          {
+            "NextAction": "810a475e-8583-4053-9625-30e8b5383ce1",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "house purchase"
+              ]
+            }
+          },
+          {
+            "NextAction": "810a475e-8583-4053-9625-30e8b5383ce1",
+            "Condition": {
+              "Operator": "TextContains",
+              "Operands": [
+                "mortgage"
+              ]
+            }
+          }
+        ],
+        "Errors": [
+          {
+            "NextAction": "931b7705-971d-41ac-8f5e-529d7ac18d25",
+            "ErrorType": "NoMatchingCondition"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:eu-central-1:964141293779:instance/9baaa263-49c3-4e5f-8489-dea1210d2df7/queue/55d8310c-6c90-42a0-b751-7fc0cb3f0851"
+      },
+      "Identifier": "931b7705-971d-41ac-8f5e-529d7ac18d25",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "c69e14a9-cd0a-41cf-b605-7a4dffae74a2",
+        "Errors": [
+          {
+            "NextAction": "eacb98c0-7551-418f-b483-5bf172d897eb",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    }
+  ]
+}
