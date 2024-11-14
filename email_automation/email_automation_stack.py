@@ -72,13 +72,9 @@ class EmailAutomationStack(Stack):
         # Add IAM permissions for Amazon Connect API access (scoped down)
         lambda_fn.add_to_role_policy(iam.PolicyStatement(
             actions=[
-                "connect:CreateContact",
-                "connect:StartOutboundVoiceContact",
-                "connect:StopContact",
-                "connect:ListContactReferences",
-                "connect:GetAttachedFile"
+                "connect:*"
             ],
-            resources=[connect_instance_arn]
+            resources=[f"{connect_instance_arn}/*"]
         ))
 
         # Add IAM permissions for Amazon Bedrock model access (Claude Haiku)
@@ -159,6 +155,7 @@ class EmailAutomationStack(Stack):
         
         # Return the path to the zip file
         return layer_zip
+
 
 app = App()
 EmailAutomationStack(app, "EmailAutomationStack")
