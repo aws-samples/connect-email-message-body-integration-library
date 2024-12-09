@@ -151,7 +151,7 @@ class EmailAutomationStack(Stack):
         Returns:
             str: Path to the created layer zip file
         """
-        # Create a temporary directory that will persist
+        # Create a temporary directory
         layer_build_dir = tempfile.mkdtemp(prefix="lambda_layer_")
         
         try:
@@ -162,8 +162,8 @@ class EmailAutomationStack(Stack):
             # Create requirements.txt with specific versions
             requirements_path = os.path.join(layer_build_dir, 'requirements.txt')
             with open(requirements_path, 'w') as f:
-                f.write('boto3==1.34.34\n')  # Specify exact version
-                f.write('botocore==1.34.34\n')  # Match boto3 version
+                f.write('boto3==1.34.34\n')
+                f.write('botocore==1.34.34\n')
             
             # Install dependencies
             logger.info("Installing dependencies for Lambda layer...")
@@ -183,21 +183,14 @@ class EmailAutomationStack(Stack):
             
             logger.info(f"Successfully created Lambda layer at: {layer_zip}")
             return layer_zip
-            
+                
         except subprocess.CalledProcessError as e:
             logger.error(f"Failed to install dependencies: {str(e)}")
             raise
         except Exception as e:
             logger.error(f"Error building Lambda layer: {str(e)}")
             raise
-        finally:
-            # Clean up temporary directory
-            try:
-                if os.path.exists(layer_build_dir):
-                    shutil.rmtree(layer_build_dir)
-                    logger.info("Cleaned up temporary directory")
-            except Exception as e:
-                logger.warning(f"Failed to cleanup temporary directory: {str(e)}")
+
 
 app = App()
 EmailAutomationStack(app, "EmailAutomationStack")
