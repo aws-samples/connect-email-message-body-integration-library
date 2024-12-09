@@ -28,7 +28,6 @@ def lambda_handler(event, context):
     
     # Extract email content from the Amazon Connect event
     email_content = extract_email_content(myevent)
-
     # Define the instruction for Bedrock
     instruction = """
     Analyze the following email message and provide the following information in a JSON format:
@@ -59,7 +58,7 @@ def lambda_handler(event, context):
 
     Provide only the JSON output, no additional text or explanations.
     """
-    
+    language_code = detect_language(email_content)
     # Call Bedrock to analyze the email content
     bedrock_result = call_bedrock(bedrock, model_id, instruction, email_content)
     
@@ -76,7 +75,8 @@ def lambda_handler(event, context):
             'email_address': result_data['extracted_info'].get('email_address', ''),
             'name': result_data['extracted_info'].get('name', ''),
             'address': result_data['extracted_info'].get('address', ''),
-            'account_number': result_data['extracted_info'].get('account_number', '')
+            'account_number': result_data['extracted_info'].get('account_number', ''),
+            'language': language_code
         }
         
         # Add other_pii as a comma-separated string if it exists
@@ -160,6 +160,13 @@ def process_body(bodyContent):
     c = '\n'.join(lines[body_start:])
     
     return c
+
+def detect_language(email_content):
+    # Detect the language of the text
+    comprehend = boto3.client('comprehend')
+    response = comprehend.detect_dominant_language(Text=email_content)
+    language_code = response['Languages'][0]['LanguageCode']
+    return language_code
 
 def call_bedrock(bedrock, model_id, instruction, email_content):
     request_body = json.dumps({
