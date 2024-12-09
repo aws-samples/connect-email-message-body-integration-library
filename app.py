@@ -161,8 +161,8 @@ class EmailAutomation(Stack):
             # Create requirements.txt with specific versions
             requirements_path = os.path.join(layer_build_dir, 'requirements.txt')
             with open(requirements_path, 'w') as f:
-                f.write('boto3==1.34.34\n')
-                f.write('botocore==1.34.34\n')
+                f.write('boto3==1.35.76\n')
+                f.write('botocore==1.35.76\n')
             
             # Install dependencies
             logger.info("Installing dependencies for Lambda layer...")
