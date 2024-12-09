@@ -86,6 +86,13 @@ class EmailAutomationStack(Stack):
                 f"arn:aws:bedrock:{self.region}::foundation-model/anthropic.claude-3-haiku-20240307-v1:0"
             ]
         ))
+        # Add IAM permissions for Amazon Comprehend DetectDominantLanguage
+        lambda_fn.add_to_role_policy(iam.PolicyStatement(
+            actions=[
+                "comprehend:DetectDominantLanguage"
+            ],
+            resources=["*"]
+        ))
 
         # Create Queues
         queue_names = ["HomeEquity", "CarLoan", "HomeLoan", "Unknown"]
@@ -139,23 +146,58 @@ class EmailAutomationStack(Stack):
             CfnOutput(self, f"Queue{queue_name}ARN", value=queue.attr_queue_arn)
 
     def build_layer(self):
+        """
+        Build Lambda layer with specific boto3 version and dependencies
+        Returns:
+            str: Path to the created layer zip file
+        """
         # Create a temporary directory that will persist
         layer_build_dir = tempfile.mkdtemp(prefix="lambda_layer_")
         
-        # Create a directory for the layer
-        layer_dir = os.path.join(layer_build_dir, 'python')
-        os.makedirs(layer_dir)
-        
-        # Install the latest boto3 and other dependencies
-        subprocess.run(["pip", "install", "boto3", "-t", layer_dir], check=True)
-        
-        # Create a zip file of the layer contents
-        layer_zip = os.path.join(layer_build_dir, 'layer.zip')
-        shutil.make_archive(os.path.join(layer_build_dir, 'layer'), 'zip', layer_dir)
-        
-        # Return the path to the zip file
-        return layer_zip
-
+        try:
+            # Create a directory for the layer
+            layer_dir = os.path.join(layer_build_dir, 'python')
+            os.makedirs(layer_dir)
+            
+            # Create requirements.txt with specific versions
+            requirements_path = os.path.join(layer_build_dir, 'requirements.txt')
+            with open(requirements_path, 'w') as f:
+                f.write('boto3==1.34.34\n')  # Specify exact version
+                f.write('botocore==1.34.34\n')  # Match boto3 version
+            
+            # Install dependencies
+            logger.info("Installing dependencies for Lambda layer...")
+            subprocess.run([
+                'pip3',
+                'install',
+                '-r', requirements_path,
+                '-t', layer_dir,
+                '--platform', 'manylinux2014_x86_64',
+                '--only-binary=:all:'
+            ], check=True)
+            
+            # Create a zip file of the layer contents
+            logger.info("Creating Lambda layer zip file...")
+            layer_zip = os.path.join(layer_build_dir, 'layer.zip')
+            shutil.make_archive(os.path.join(layer_build_dir, 'layer'), 'zip', layer_dir)
+            
+            logger.info(f"Successfully created Lambda layer at: {layer_zip}")
+            return layer_zip
+            
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install dependencies: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Error building Lambda layer: {str(e)}")
+            raise
+        finally:
+            # Clean up temporary directory
+            try:
+                if os.path.exists(layer_build_dir):
+                    shutil.rmtree(layer_build_dir)
+                    logger.info("Cleaned up temporary directory")
+            except Exception as e:
+                logger.warning(f"Failed to cleanup temporary directory: {str(e)}")
 
 app = App()
 EmailAutomationStack(app, "EmailAutomationStack")
