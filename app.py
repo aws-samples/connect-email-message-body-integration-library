@@ -51,7 +51,7 @@ class EmailAutomation(Stack):
         lambda_layer = lambda_.LayerVersion(
             self, "LambdaLayer",
             code=lambda_.Code.from_asset(layer_asset_path),
-            compatible_runtimes=[lambda_.Runtime.PYTHON_3_11],
+            compatible_runtimes=[lambda_.Runtime.PYTHON_3_11, lambda_.Runtime.PYTHON_3_12],
             description="Lambda Layer for boto3 and other dependencies"
         )
 
