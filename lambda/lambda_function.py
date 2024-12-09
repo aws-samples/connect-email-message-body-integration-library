@@ -91,75 +91,154 @@ def lambda_handler(event, context):
         }
         
 def extract_email_content(myevent):
-    # Grab data from the event message
-    subject = myevent["Name"]
-    instId = myevent["InstanceARN"].split('/')[1]
-    contactId = myevent["ContactId"]
-    prevContactId = myevent["PreviousContactId"]
-    contactArn = myevent["InstanceARN"]+"/contact/"+contactId
-    myBodyReference = ''
-    for myReference in myevent["References"]:
-        if myevent["References"][myReference]["Type"] == "EMAIL_MESSAGE":
-            myBodyReference = myReference
-    
-    # Look for main body and attachments
-    response = connectClient.list_contact_references(
-        InstanceId=instId,
-        ContactId=contactId,
-        ReferenceTypes=[
-            'ATTACHMENT','EMAIL','EMAIL_MESSAGE'
-        ]
-    )
+    try:
+        # Log the incoming event for debugging
+        if enable_logging:
+            print(f"Incoming event: {json.dumps(myevent, indent=2)}")
 
-    myRefSumList = response['ReferenceSummaryList'][0]
+        # Grab data from the event message
+        instId = myevent["InstanceARN"].split('/')[1]
+        contactId = myevent["ContactId"]
+        contactArn = myevent["InstanceARN"]+"/contact/"+contactId
 
-    # Grab the email message file information. Should only be one.
-    bodyFileId = myRefSumList['EmailMessage']['Name']
-    bodyArn = myRefSumList['EmailMessage']['Arn']
-    
-    # get_attached_file uses the contactid ARN, not the returned ARN in the References.
-    response = connectClient.get_attached_file(
-        InstanceId=instId,
-        FileId=bodyFileId,
-        UrlExpiryInSeconds=60,
-        AssociatedResourceArn=contactArn
-    )
-    
-    bodyFileUrl = response["DownloadUrlMetadata"]["Url"]
+        # First, try to get the email reference directly from the event
+        if "References" in myevent:
+            if enable_logging:
+                print(f"References found in event: {json.dumps(myevent['References'], indent=2)}")
+            
+            # Look for email reference in the event
+            for ref_key, ref_value in myevent["References"].items():
+                if enable_logging:
+                    print(f"Checking reference: {ref_key} = {json.dumps(ref_value, indent=2)}")
+                
+                if isinstance(ref_value, dict) and ref_value.get("Type") == "EMAIL_MESSAGE":
+                    if enable_logging:
+                        print(f"Found EMAIL_MESSAGE reference: {json.dumps(ref_value, indent=2)}")
+                    
+                    # Try different possible value fields
+                    file_id = (ref_value.get("Value") or 
+                             ref_value.get("Reference") or 
+                             ref_value.get("Id") or 
+                             ref_key)  # Use the reference key itself as a last resort
+                    
+                    if file_id:
+                        if enable_logging:
+                            print(f"Using file_id: {file_id}")
+                        break
+            else:
+                if enable_logging:
+                    print("No valid EMAIL_MESSAGE reference found in References")
+                file_id = None
+        else:
+            if enable_logging:
+                print("No References found in event")
+            file_id = None
 
-    bodyContent = 'No Message Found'
-    
-    # Grab the message text for the body
-    with urllib.request.urlopen(bodyFileUrl) as url:
-        bodyFileJson = json.load(url)
-        bodyContent = bodyFileJson["messageContent"]
-    c = process_body(bodyContent)
-    content = clean_string(c)
-    print("the content for LLM is ", content)
-    
-    return content
-    
+        # If we didn't find a file_id in References, try list_contact_references
+        if not file_id:
+            if enable_logging:
+                print("Attempting to get references using list_contact_references")
+
+            response = connectClient.list_contact_references(
+                InstanceId=instId,
+                ContactId=contactId,
+                ReferenceTypes=['EMAIL_MESSAGE']
+            )
+
+            if enable_logging:
+                print(f"list_contact_references response: {json.dumps(response, indent=2)}")
+
+            if response.get('ReferenceSummaryList'):
+                email_ref = response['ReferenceSummaryList'][0]
+                if enable_logging:
+                    print(f"Found reference summary: {json.dumps(email_ref, indent=2)}")
+                
+                # Try all possible fields for the file ID
+                file_id = (email_ref.get('Value') or 
+                          email_ref.get('Reference') or 
+                          email_ref.get('Name') or 
+                          email_ref.get('Id'))
+
+        if not file_id:
+            # Try to get the message directly from the event
+            if 'Attributes' in myevent and 'body' in myevent['Attributes']:
+                return clean_string(process_body(myevent['Attributes']['body']))
+            
+            if enable_logging:
+                print("Available event data:")
+                print(f"Event keys: {list(myevent.keys())}")
+                if 'References' in myevent:
+                    print(f"References keys: {list(myevent['References'].keys())}")
+                if 'Attributes' in myevent:
+                    print(f"Attributes keys: {list(myevent['Attributes'].keys())}")
+            
+            raise ValueError("Could not find file ID in email reference")
+
+        # Get the attached file using the correct parameters
+        if enable_logging:
+            print(f"Getting attached file with ID: {file_id}")
+
+        file_response = connectClient.get_attached_file(
+            InstanceId=instId,
+            FileId=file_id,
+            AssociatedResourceArn=contactArn
+        )
+
+        if enable_logging:
+            print(f"get_attached_file response: {json.dumps(file_response, indent=2)}")
+
+        if ('DownloadUrlMetadata' not in file_response or 
+            'Url' not in file_response['DownloadUrlMetadata']):
+            raise ValueError("Failed to get download URL for email content")
+
+        download_url = file_response['DownloadUrlMetadata']['Url']
+
+        # Fetch and process the email content
+        with urllib.request.urlopen(download_url) as url:
+            email_json = json.load(url)
+            
+            if enable_logging:
+                print(f"Email JSON content keys: {list(email_json.keys())}")
+
+            # Try multiple possible field names for the content
+            content = (email_json.get('messageContent') or 
+                      email_json.get('content') or 
+                      email_json.get('body') or 
+                      email_json.get('text') or 
+                      email_json.get('message'))
+            
+            if not content:
+                if enable_logging:
+                    print(f"Available fields in email_json: {list(email_json.keys())}")
+                raise ValueError("No message content found in email file")
+
+            return clean_string(process_body(content))
+
+    except Exception as e:
+        if enable_logging:
+            print(f"Error in extract_email_content: {str(e)}")
+            print(f"Full event data: {json.dumps(myevent, indent=2)}")
+        raise
+
 def process_body(bodyContent):
-    # Remove any HTML tags
-    clean_content = re.sub(r'<[^>]+>', '', bodyContent)
-    
-    # Remove any leading/trailing whitespace
-    clean_content = clean_content.strip()
-    
-    # Split the content into lines
-    lines = clean_content.split('\n')
-    
-    # Find the start of the email body
-    body_start = 0
-    for i, line in enumerate(lines):
-        if line.strip() == '':
-            body_start = i + 1
-            break
-    
-    # Extract the body
-    c = '\n'.join(lines[body_start:])
-    
-    return c
+    try:
+        if not bodyContent:
+            return ""
+        
+        if not isinstance(bodyContent, str):
+            bodyContent = str(bodyContent)
+
+        # Remove any HTML tags
+        clean_content = re.sub(r'<[^>]+>', '', bodyContent)
+        # Remove any leading/trailing whitespace
+        clean_content = clean_content.strip()
+        
+        return clean_content
+
+    except Exception as e:
+        if enable_logging:
+            print(f"Error in process_body: {str(e)}")
+        return bodyContent
 
 def detect_language(email_content):
     # Detect the language of the text
