@@ -112,6 +112,9 @@
             },
             "account_number": {
               "useDynamic": true
+            },
+            "language": {
+              "useDynamic": true
             }
           }
         },
@@ -119,7 +122,8 @@
           "pii",
           "intent",
           "phone_number",
-          "account_number"
+          "account_number",
+          "language"
         ]
       },
       "0027fea4-7e6b-41b7-91a0-cfc97d382bdd": {
@@ -359,7 +363,8 @@
           "pii": "$.External.pii_detected",
           "intent": "$.External.user_intent",
           "phone_number": "$.External.phone_number",
-          "account_number": "$.External.account_number"
+          "account_number": "$.External.account_number",
+          "language": "$.External.language"
         },
         "TargetContact": "Current"
       },
