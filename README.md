@@ -55,9 +55,7 @@ Install the required dependencies:
 pip install -r requirements.txt
 ```
 
-```
 update the values in the .env file
-```
 
 Before you deploy any AWS CDK application, you need to bootstrap a space in your account and the Region you’re deploying into. To bootstrap in your default Region, issue the following command:
 
