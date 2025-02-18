@@ -56,7 +56,7 @@ pip install -r requirements.txt
 ```
 
 
-update the values in the .env file
+#### Update the values in the .env file
 
 
 
