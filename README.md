@@ -1,4 +1,4 @@
-# Prerequisites
+## Prerequisites
 
 You must have the following prerequisites to use this sample code:
 
@@ -20,7 +20,7 @@ Using your dev tool of choice:
 ```
 npm install -g aws-cdk-lib@latest
 ```
-### Enter your account details in the .env file
+## Enter your account details in the .env file
 
 Using your dev tool of choice:
 
@@ -44,7 +44,7 @@ HOURS_OF_OPERATION_ARN=aws:connect:us-west-2:01234567890:instance/aaabbbccc-1234
     * [Amazon Connect instance ID or ARN](https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html)
     * [Amazon Connect Hours of Operation](https://docs.aws.amazon.com/connect/latest/adminguide/set-hours-operation.html)
 
-#### Setup a virtual environment
+## Setup a virtual environment
 
 This project is set up like a standard Python project. 
 
@@ -79,7 +79,7 @@ python3 -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
-##### Bootstrap, synthesize, and deploy the AWS CDK project
+## Bootstrap, synthesize, and deploy the AWS CDK project
 Before you deploy any AWS CDK application built with this sample code, you need to bootstrap a space in your AWS account and the AWS region you’re deploying into. 
 
 * To bootstrap in your default AWS region, issue the following command:
@@ -109,7 +109,7 @@ cdk deploy
 
 You’re done with your development, packaging, and deployment of the sample code from the AWS CDK project in your dev tool of choice. The rest of the configuration is done via the [AWS Console](https://docs.aws.amazon.com/signin/latest/userguide/how-to-sign-in.html) and your [Amazon Connect instance](https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-name.html).
 
-###### Add Lambda generated from AWS CDK project to Connect instance
+## Add Lambda generated from AWS CDK project to Connect instance
 
 * Navigate to the AWS Console 
 * Navigate to Amazon Connect using the [AWS Console search bar](https://docs.aws.amazon.com/resource-explorer/latest/userguide/using-unified-search.html)
@@ -119,7 +119,7 @@ You’re done with your development, packaging, and deployment of the sample cod
 * Click the “Lambda Functions” dropdown to select the AWS Lambda named something like: EmailAutomation-LambdaFunction-aaabbbccc111-dddeefff222
 * Click “+ Add Lambda Function” to attach the AWS Lambda to your Amazon Connect instance
 
-###### Configure Amazon Bedrock models available in your AWS account
+## Configure Amazon Bedrock models available in your AWS account
 
 * Once you have attached your AWS Lambda to your Amazon Connect instance
 * Navigate to Amazon Bedrock using the [AWS Console search bar](https://docs.aws.amazon.com/resource-explorer/latest/userguide/using-unified-search.html)
@@ -133,7 +133,7 @@ You’re done with your development, packaging, and deployment of the sample cod
     * This will take you to the “Review and submit” page where you should see a status of "Access granted"
     * Click “Submit” to enable the Amazon Bedrock model for your account
 
-###### Configure Amazon Connect resources generated from AWS CDK project
+## Configure Amazon Connect resources generated from AWS CDK project
 
 * Once you have enabled the Amazon Bedrock models required
 * Navigate to Amazon Connect using the [AWS Console search bar](https://docs.aws.amazon.com/resource-explorer/latest/userguide/using-unified-search.html)
@@ -149,7 +149,7 @@ You’re done with your development, packaging, and deployment of the sample cod
 * Ensure that you have “Email” checked under the “Channels” column
 * Associate the “EmailRoutingIntelligence” flow to the email address of your choice to test
 
-###### Built-in use cases to test
+## Built-in use cases to test
 
 * Send in emails from your email client (e.g., Outlook) to the email address associated with the “EmailRoutingIntelligence” flow
 * The Lambda will send your email message to Amazon Bedrock to be analyzed for the following use cases
@@ -179,7 +179,7 @@ You’re done with your development, packaging, and deployment of the sample cod
 
 * Depending on the results from Amazon Bedrock’s analysis of the email message from the email contact, you can use the [Send message](https://docs.aws.amazon.com/connect/latest/adminguide/send-message.html) flow block to automatically respond to a known issue (e.g., “I need help resetting my password”) using an [email template](https://docs.aws.amazon.com/connect/latest/adminguide/create-message-templates1.html) with [contact attributes](https://docs.aws.amazon.com/connect/latest/adminguide/connect-attrib-list.html) to [personalize the automted response](https://docs.aws.amazon.com/connect/latest/adminguide/personalize-templates.html) to the inbound email contact
 
-###### Customize the generated Lambda for other use cases
+## Customize the generated Lambda for other use cases
 
 You can customize the AWS Lambda provided with the AWS CDK project sample code to better fit your use cases and required outputs from Amazon Bedrock:
 
@@ -219,9 +219,9 @@ Analyze the following email message and provide the following information in a J
 * You can customize the Amazon Bedrock model used to analyze the email message from the email contact
 * While this sample code uses Python, it’s also possible to achieve the same integration using Lambda with other languages as well
 
-# Appendix
+## Appendix
 
-## Common errors
+### Common errors
 
 **Error 1**
 ```
@@ -274,7 +274,7 @@ Need to perform AWS calls for account 0123456790, but no credentials have been c
 ```
 * You need to configure your [AWS CLI credentials](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html) in the dev tool of your choice
 
-#### Clean-up
+## Clean-up
  - In the Amazon Connect Instance:
    - Remove the Contact Flow association to email address(s)
    - Remove the Queue associations to routing profile(s)
