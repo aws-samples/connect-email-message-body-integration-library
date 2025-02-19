@@ -26,19 +26,19 @@ Using your dev tool of choice:
 
 * Open the .env file that came with the cloned GitHub repository
 * Edit the follow with your account details:
-
+```
 CONNECT_BUCKET=your-connect-s3-bucket
 INSTANCE_NAME=your-connect-instance-name
 CONNECT_INSTANCE_ARN=your-connect-instance-arn
 HOURS_OF_OPERATION_ARN=your-connect-instance-hours-of-opperation-arn
-
+```
 * Example of  .env file after entering account details:
-
+```
 CONNECT_BUCKET=amazon-connect-aaabbbccc112233
 INSTANCE_NAME=myconnectinstance
 CONNECT_INSTANCE_ARN=arn:aws:connect:us-west-2:01234567890:instance/aaabbbccc-1234-abcd-5678-aaabbbcccdddd
 HOURS_OF_OPERATION_ARN=aws:connect:us-west-2:01234567890:instance/aaabbbccc-1234-abcd-5678-aaabbbcccdddd/operating-hours/aaabbbccc-1234-abcd-5678-aaabbbcccdddd
-
+```
 * If you need help getting details:
     * [Amazon S3 bucket name](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html#bucket-names)
     * [Amazon Connect instance ID or ARN](https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html)
